@@ -1775,37 +1775,7 @@ DENON_AVR_Parse(@)
 			$return = $name." ".$status;
 		}
 	}
-	#Input select
-	elsif ($msg =~ /^SI(.+)/)
-	{
-		my $status = DENON_GetKey('SI', $1);
-		readingsBulkUpdate($hash, "input", $status) if($status ne "unknown");
-		readingsBulkUpdate($hash, "currentStream", "-") if($status ne "Server");
-		readingsBulkUpdate($hash, "sound_signal_in", "-") if($status ne "CD|DOCK|DVR|DVD|BD|TV|SAT\/CBL|SAT|GAME|MPLAY|SAT|AUX1|AUX2|AUX3|AUX4|AUX5|AUX6|AUX7"); #	sets sound_signal_out to "-" if Input <-
-		#$hash->{helper}{INPUT} = $1;
-		$return = "input".$status;
-		
-		if ($1 =~ /^(TUNER|DVD|BD|TV|SAT\/CBL|GAME|SAT|AUX1|AUX2|AUX3|AUX4|AUX5|AUX6|AUX7|FLICKR)$/)
-		{
-			for(my $i = 0; $i < 9; $i++) {
-				my $cur = "";
-				my $status = 'ignore';
-				if ($i == 2)
-				{
-					$cur = "s";
-					$status = DENON_GetValue('NSE', $i.$cur);
-					if($status ne 'ignore'){
-						readingsBulkUpdate($hash, $status, '-');
-					}
-					$cur = "a";
-				}
-				$status = DENON_GetValue('NSE', $i.$cur);
-				if($status ne 'ignore'){
-					readingsBulkUpdate($hash, $status, '-');
-				}
-			}
-		}
-	}
+
 	#Video-Select
 	elsif ($msg =~ /^SV(.+)/)
 	{
@@ -2238,7 +2208,39 @@ DENON_AVR_Parse(@)
 				}
 			}		
 		}
-	}	
+	}
+	
+		#Input select
+	elsif ($msg =~ /^SI(.+)/)
+	{
+		my $status = DENON_GetKey('SI', $1);
+		readingsBulkUpdate($hash, "input", $status) if($status ne "unknown");
+		readingsBulkUpdate($hash, "currentStream", "-") if($status ne "Server");
+		readingsBulkUpdate($hash, "sound_signal_in", "-") if($status ne "CD|DOCK|DVR|DVD|BD|TV|SAT\/CBL|SAT|GAME|MPLAY|SAT|AUX1|AUX2|AUX3|AUX4|AUX5|AUX6|AUX7"); #	sets sound_signal_out to "-" if Input <-
+		#$hash->{helper}{INPUT} = $1;
+		$return = "input".$status;
+		
+		if ($1 =~ /^(TUNER|DVD|BD|TV|SAT\/CBL|GAME|SAT|AUX1|AUX2|AUX3|AUX4|AUX5|AUX6|AUX7|FLICKR)$/)
+		{
+			for(my $i = 0; $i < 9; $i++) {
+				my $cur = "";
+				my $status = 'ignore';
+				if ($i == 2)
+				{
+					$cur = "s";
+					$status = DENON_GetValue('NSE', $i.$cur);
+					if($status ne 'ignore'){
+						readingsBulkUpdate($hash, $status, '-');
+					}
+					$cur = "a";
+				}
+				$status = DENON_GetValue('NSE', $i.$cur);
+				if($status ne 'ignore'){
+					readingsBulkUpdate($hash, $status, '-');
+				}
+			}
+		}
+	}
 	#Model
 	elsif ($msg =~ /^NS([A-Z]{3}) (.+)/){
 		my $status = DENON_GetValue('NS', $1);
