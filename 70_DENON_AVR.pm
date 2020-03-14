@@ -1628,12 +1628,14 @@ DENON_AVR_Parse(@)
 		readingsBulkUpdate($hash, "favorite", $1);
 		$return = "favorite ".$1;
 	}
-		#Mute
-	elsif ($msg =~ /^MU(.+)/)
+	#Mute
+		elsif ($msg =~ /^MU(.+)/)
 	{
-		my $status = DENON_GetValue('MU', $1);
-			readingsBulkUpdate($hash, "mute", lc($1)) if($status ne "unknown");
-			$return = "mute".lc($1);
+		my $status = $1;
+		if ($1 =~ /^(ON|OFF)/) {
+			readingsBulkUpdate($hash, "mute", lc($status)) if($status ne "unknown");
+			$return = "mute ".lc($status);
+		}
 	}
   	#Maximal Volume
     	elsif ($msg =~ /^MVMAX(.+)/)
