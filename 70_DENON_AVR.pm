@@ -1,7 +1,7 @@
 ###############################################################################
 # 70_DENON_AVR
 #
-#     This file is part of Fhem.
+#     This file is part of Fhem. By Shadow3561.
 #
 #     Fhem is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
